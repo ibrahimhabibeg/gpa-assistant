@@ -31,7 +31,7 @@ def init_session_state() -> None:
     if "transcript" not in st.session_state:
         st.session_state.transcript = None
     if "program_hours" not in st.session_state:
-        st.session_state.program_hours = 140.0
+        st.session_state.program_hours = 143.0
     if "non_gpa_hours" not in st.session_state:
         st.session_state.non_gpa_hours = 9.0
     if "uploaded_filename" not in st.session_state:
