@@ -3,7 +3,7 @@ import tempfile
 
 import streamlit as st
 
-from algorithms import (
+from gpa_assist.algorithms import (
     calculate_max_possible_gpa,
     can_i_get_a_certain_rating,
     if_i_continue_with_a_certain_gpa_for_remaining_courses,
@@ -11,8 +11,8 @@ from algorithms import (
     what_per_course_average_gpa_is_needed_for_rating,
     gpa_to_letter_grade
 )
-from models import OverallRating
-from parser import parse_html_file
+from gpa_assist.models import OverallRating
+from gpa_assist.parser import parse_html_file
 
 
 st.set_page_config(page_title="GPA Assistant", layout="wide")

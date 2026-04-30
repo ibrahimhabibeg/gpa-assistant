@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, UploadFile
-from .models import StudentTranscript, OverallRating
-from .parser import parse_html_string
-from .algorithms import (
+from gpa_assist.models import StudentTranscript, OverallRating
+from gpa_assist.parser import parse_html_string
+from gpa_assist.algorithms import (
     calculate_max_possible_gpa,
     can_i_get_a_certain_rating,
     if_i_continue_with_a_certain_gpa_for_remaining_courses,

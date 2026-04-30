@@ -1,5 +1,5 @@
 from typing import List, Optional
-from .models import (
+from gpa_assist.models import (
     Course,
     LetterGrade,
     StudentTranscript,

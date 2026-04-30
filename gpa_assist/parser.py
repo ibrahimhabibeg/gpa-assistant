@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from typing import List, Optional
-from .models import Course, Semester, StudentTranscript, TermType
+from gpa_assist.models import Course, Semester, StudentTranscript, TermType
 
 
 ARABIC_HEADERS = {"الكود", "الساعات المعتمدة", "الدرجة"}
