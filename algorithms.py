@@ -1,5 +1,5 @@
 from typing import List, Optional
-from models import (
+from .models import (
     Course,
     LetterGrade,
     StudentTranscript,
@@ -147,7 +147,7 @@ def what_per_course_average_gpa_is_needed_for_rating(
 
 def if_i_continue_with_a_certain_gpa_for_remaining_courses(
     transcript: StudentTranscript, hypothetical_gpa: float
-) -> OverallRating:
+) -> float:
     current_quality_points = sum(
         c.get_grade_quality_points()
         for c in transcript.get_all_courses()
