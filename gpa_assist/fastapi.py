@@ -1,5 +1,6 @@
 from fastapi import FastAPI, File, UploadFile
-from gpa_assist.models import StudentTranscript, OverallRating
+from gpa_assist.models import StudentTranscript
+from gpa_assist.config import OverallRating
 from gpa_assist.parser import parse_html_string
 from gpa_assist.algorithms import (
     calculate_max_possible_gpa,
@@ -7,7 +8,6 @@ from gpa_assist.algorithms import (
     if_i_continue_with_a_certain_gpa_for_remaining_courses,
     max_achievable_rating,
     what_per_course_average_gpa_is_needed_for_rating,
-    calculate_cumulative_gpa,
 )
 
 app = FastAPI()
@@ -64,4 +64,4 @@ def required_average_gpa_for_rating(
 
 @app.post("/calculate-gpa")
 def calculate_gpa(transcript: StudentTranscript) -> float:
-    return calculate_cumulative_gpa(transcript)
+    return transcript.get_cumulative_gpa()

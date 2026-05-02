@@ -9,9 +9,9 @@ from gpa_assist.algorithms import (
     if_i_continue_with_a_certain_gpa_for_remaining_courses,
     max_achievable_rating,
     what_per_course_average_gpa_is_needed_for_rating,
-    gpa_to_letter_grade
+    gpa_to_closest_letter_grade
 )
-from gpa_assist.models import OverallRating
+from gpa_assist.config import OverallRating
 from gpa_assist.parser import parse_html_file
 
 
@@ -147,7 +147,7 @@ def render_required_average_question(transcript) -> None:
     required_avg = what_per_course_average_gpa_is_needed_for_rating(
         transcript, target_rating
     )
-    equivalent_letter_grade = gpa_to_letter_grade(required_avg) if required_avg is not None else "N/A"
+    equivalent_letter_grade = gpa_to_closest_letter_grade(required_avg) if required_avg is not None else "N/A"
 
     if required_avg is None:
         st.warning("A required average could not be computed for this target.")
