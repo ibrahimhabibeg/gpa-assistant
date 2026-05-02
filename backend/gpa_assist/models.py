@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from gpa_assist.config import GRADE_POINT_MAP, LetterGrade
+from backend.gpa_assist.config import GRADE_POINT_MAP, LetterGrade
 
 # WARNING
 # Since there is no indicatorin the transcript for non-GPA courses

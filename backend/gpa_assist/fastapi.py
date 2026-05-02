@@ -1,8 +1,8 @@
-from fastapi import FastAPI, File, UploadFile
-from gpa_assist.models import StudentTranscript
-from gpa_assist.config import OverallRating
-from gpa_assist.parser import parse_html_string
-from gpa_assist.algorithms import (
+from backend.gpa_assist.fastapi import FastAPI, File, UploadFile
+from backend.gpa_assist.models import StudentTranscript
+from backend.gpa_assist.config import OverallRating
+from backend.gpa_assist.parser import parse_html_string
+from backend.gpa_assist.algorithms import (
     calculate_max_possible_gpa,
     can_i_get_a_certain_rating,
     if_i_continue_with_a_certain_gpa_for_remaining_courses,

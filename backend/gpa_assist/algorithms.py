@@ -1,10 +1,10 @@
-from gpa_assist.models import (
+from backend.gpa_assist.models import (
     Course,
     LetterGrade,
     Semester,
     StudentTranscript,
 )
-from gpa_assist.config import GRADE_POINT_MAP, RATING_THRESHOLDS, OverallRating
+from backend.gpa_assist.config import GRADE_POINT_MAP, RATING_THRESHOLDS, OverallRating
 
 
 def calculate_overall_rating(gpa: float) -> OverallRating:
