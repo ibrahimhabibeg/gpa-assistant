@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from typing import List, Optional
-from backend.gpa_assist.models import Course, Semester, StudentTranscript, LetterGrade
-from backend.gpa_assist.config import ARABIC_TO_ENGLISH_GRADES
+from gpa_assist.models import Course, Semester, StudentTranscript, LetterGrade
+from gpa_assist.config import ARABIC_TO_ENGLISH_GRADES
 
 
 ARABIC_HEADERS = {"الكود", "الساعات المعتمدة", "الدرجة"}

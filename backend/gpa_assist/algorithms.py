@@ -1,10 +1,10 @@
-from backend.gpa_assist.models import (
+from gpa_assist.models import (
     Course,
     LetterGrade,
     Semester,
     StudentTranscript,
 )
-from backend.gpa_assist.config import GRADE_POINT_MAP, RATING_THRESHOLDS, OverallRating
+from gpa_assist.config import GRADE_POINT_MAP, RATING_THRESHOLDS, OverallRating
 
 
 def calculate_overall_rating(gpa: float) -> OverallRating:
@@ -15,11 +15,30 @@ def calculate_overall_rating(gpa: float) -> OverallRating:
     return OverallRating.TOO_WEAK
 
 
-def gpa_to_closest_letter_grade(gpa: float) -> str:
-    closest_grade = min(
-        GRADE_POINT_MAP.keys(), key=lambda grade: abs(GRADE_POINT_MAP[grade] - gpa)
-    )
-    return closest_grade
+def gpa_to_closest_letter_grade(gpa: float) -> LetterGrade:
+    best_grade = LetterGrade.A_PLUS
+    best_diff = abs(gpa - GRADE_POINT_MAP[best_grade])
+    eps = 1e-6
+
+    for grade, gp in GRADE_POINT_MAP.items():
+        diff = abs(gp - gpa)
+        if best_grade is None:
+            best_grade = grade
+            best_diff = diff
+            continue
+
+        if abs(diff - best_diff) < eps:
+            if gp > GRADE_POINT_MAP[best_grade]:
+                best_grade = grade
+                best_diff = diff
+        elif diff < best_diff:
+            best_grade = grade
+            best_diff = diff
+
+    if GRADE_POINT_MAP[best_grade] == 0.0:
+        return LetterGrade.FAIL
+
+    return best_grade
 
 
 def calculate_max_possible_gpa(transcript: StudentTranscript) -> float:
