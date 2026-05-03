@@ -114,7 +114,7 @@ export const Questions: React.FC<QuestionsProps> = ({ courses, programHours, non
                       type="range" 
                       min="0" 
                       max="4" 
-                      step="0.05" 
+                      step="0.01" 
                       value={hypotheticalGpa}
                       onChange={(e) => setHypotheticalGpa(parseFloat(e.target.value))}
                       className="w-full accent-accent h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer"
