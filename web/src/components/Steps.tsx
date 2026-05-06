@@ -19,26 +19,31 @@ export const Steps: React.FC = () => {
   ];
 
   return (
-    <div className="w-full mb-12">
+    <div id="steps-section" className="w-full mb-12">
       {steps.map((step, idx) => (
         <motion.div
           key={idx}
+          id="step-01-card"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="glass-card rounded-2xl p-8 mb-12"
         >
           <div className="flex items-center gap-4 mb-6">
-            <span className="text-4xl font-bold text-accent/20 font-mono leading-none">{step.number}</span>
+            <span id="step-01-number" className="text-4xl font-bold text-accent/20 font-mono leading-none">{step.number}</span>
             <div>
-              <h2 className="text-2xl font-semibold text-gradient">{step.title}</h2>
-              <p className="text-foreground-muted text-sm mt-1">{step.description}</p>
+              <h2 id="step-01-title" className="text-2xl font-semibold text-gradient">{step.title}</h2>
+              <p id="step-01-description" className="text-foreground-muted text-sm mt-1">{step.description}</p>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div id="step-01-items" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {step.items.map((item, i) => (
-              <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors group">
+              <div
+                key={i}
+                id={`step-01-item-${i + 1}`}
+                className="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors group"
+              >
                 <div className="flex flex-col items-center gap-2">
                   <span className="text-[10px] font-mono font-bold text-accent/40 group-hover:text-accent">0{i + 1}</span>
                   <div className="p-1.5 rounded-md bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition-all">
@@ -55,16 +60,17 @@ export const Steps: React.FC = () => {
       ))}
 
       <motion.div
+        id="step-02-card"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
         className="mb-8 px-8"
       >
         <div className="flex items-center gap-4 mb-2">
-          <span className="text-4xl font-bold text-accent/20 font-mono leading-none">02</span>
+          <span id="step-02-number" className="text-4xl font-bold text-accent/20 font-mono leading-none">02</span>
           <div>
-            <h2 className="text-2xl font-semibold text-gradient">Upload Transcript</h2>
-            <p className="text-foreground-muted text-sm mt-1">
+            <h2 id="step-02-title" className="text-2xl font-semibold text-gradient">Upload Transcript</h2>
+            <p id="step-02-description" className="text-foreground-muted text-sm mt-1">
               Upload your Ibn Al-Haitham HTML export, then provide program requirements before parsing.
             </p>
           </div>

@@ -56,9 +56,10 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
   };
 
   return (
-    <div className="w-full px-6 mb-24">
+    <div id="upload-section" className="w-full px-6 mb-24">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <motion.div
+          id="drop-zone"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
@@ -73,6 +74,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
           )}
         >
           <input
+            id="file-input"
             type="file"
             accept=".html"
             className="absolute inset-0 opacity-0 cursor-pointer"
@@ -83,6 +85,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
             {status === 'idle' && (
               <motion.div
                 key="idle"
+                id="upload-status-idle"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -92,7 +95,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
                   <Upload className="w-6 h-6 text-foreground-muted group-hover:text-accent" />
                 </div>
                 <div className="text-left">
-                  <h3 className="text-lg font-medium text-foreground">Upload Transcript</h3>
+                  <h3 id="upload-idle-heading" className="text-lg font-medium text-foreground">Upload Transcript</h3>
                   <p className="text-foreground-muted text-xs">
                     Drop your <span className="text-foreground font-mono">MyU.html</span> here or click to browse
                   </p>
@@ -103,6 +106,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
             {status === 'success' && (
               <motion.div
                 key="success"
+                id="upload-status-success"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 className="flex items-center gap-6 justify-center"
@@ -111,8 +115,8 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
                   <CheckCircle className="w-6 h-6 text-emerald-500" />
                 </div>
                 <div className="text-left">
-                  <h3 className="text-lg font-medium text-foreground">File Ready</h3>
-                  <p className="text-emerald-500/80 text-xs font-mono">{fileName}</p>
+                  <h3 id="upload-success-heading" className="text-lg font-medium text-foreground">File Ready</h3>
+                  <p id="upload-success-filename" className="text-emerald-500/80 text-xs font-mono">{fileName}</p>
                 </div>
               </motion.div>
             )}
@@ -120,6 +124,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
             {status === 'error' && (
               <motion.div
                 key="error"
+                id="upload-status-error"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 className="flex items-center gap-6 justify-center"
@@ -128,8 +133,8 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
                   <AlertCircle className="w-6 h-6 text-red-500" />
                 </div>
                 <div className="text-left">
-                  <h3 className="text-lg font-medium text-foreground">Invalid File</h3>
-                  <p className="text-red-500/80 text-xs">Please upload an HTML file.</p>
+                  <h3 id="upload-error-heading" className="text-lg font-medium text-foreground">Invalid File</h3>
+                  <p id="upload-error-message" className="text-red-500/80 text-xs">Please upload an HTML file.</p>
                 </div>
               </motion.div>
             )}
@@ -140,15 +145,17 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
 
         {/* Settings Panel */}
         <motion.div
+          id="settings-panel"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
           className="glass-card rounded-2xl p-8 space-y-6"
         >
           <div>
-            <label className="text-xs font-mono uppercase tracking-widest text-foreground-subtle block mb-3">Program Hours</label>
+            <label id="program-hours-label" className="text-xs font-mono uppercase tracking-widest text-foreground-subtle block mb-3">Program Hours</label>
             <div className="relative group">
-              <input 
+              <input
+                id="program-hours-input"
                 type="number" 
                 value={programHours}
                 onChange={(e) => setProgramHours(parseFloat(e.target.value) || 0)}
@@ -159,9 +166,10 @@ export const UploadZone: React.FC<UploadZoneProps> = ({
           </div>
 
           <div>
-            <label className="text-xs font-mono uppercase tracking-widest text-foreground-subtle block mb-3">Non GPA Hours</label>
+            <label id="non-gpa-hours-label" className="text-xs font-mono uppercase tracking-widest text-foreground-subtle block mb-3">Non GPA Hours</label>
             <div className="relative group">
-              <input 
+              <input
+                id="non-gpa-hours-input"
                 type="number" 
                 value={nonGpaHours}
                 onChange={(e) => setNonGpaHours(parseFloat(e.target.value) || 0)}

@@ -21,7 +21,9 @@ const BentoCard: React.FC<{
   className?: string;
   delay?: number;
   color?: 'accent' | 'emerald' | 'amber' | 'blue';
-}> = ({ title, value, subtitle, icon, className, delay = 0, color = 'accent' }) => {
+  testId?: string;
+  valueTestId?: string;
+}> = ({ title, value, subtitle, icon, className, delay = 0, color = 'accent', testId, valueTestId }) => {
   const colorMap = {
     accent: 'text-accent',
     emerald: 'text-emerald-500',
@@ -31,6 +33,7 @@ const BentoCard: React.FC<{
 
   return (
     <motion.div
+      id={testId}
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
@@ -44,7 +47,7 @@ const BentoCard: React.FC<{
       </div>
       <div>
         <h4 className="text-foreground-muted text-sm font-medium mb-1 tracking-wide uppercase">{title}</h4>
-        <div className="text-4xl font-semibold text-gradient mb-2">{value}</div>
+        <div id={valueTestId} className="text-4xl font-semibold text-gradient mb-2">{value}</div>
         {subtitle && <p className="text-foreground-subtle text-sm leading-relaxed">{subtitle}</p>}
       </div>
       
@@ -79,10 +82,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ courses, programHours, non
   const formatRating = (r: OverallRating) => r.replace('_', ' ').toUpperCase();
 
   return (
-    <div className="container mx-auto px-6 pb-32">
+    <div id="dashboard-section" className="container mx-auto px-6 pb-32">
       <div className="grid grid-cols-1 md:grid-cols-6 gap-6 auto-rows-[220px]">
-        {/* Main GPA Card */}
+
         <BentoCard
+          testId="dashboard-current-gpa-card"
+          valueTestId="dashboard-current-gpa-value"
           title="Current Cumulative GPA"
           value={stats.currentGpa.toFixed(2)}
           subtitle={`Based on ${stats.completedCourses} courses.`}
@@ -91,8 +96,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ courses, programHours, non
           color="accent"
         />
 
-        {/* Rating Card */}
         <BentoCard
+          testId="dashboard-overall-rating-card"
+          valueTestId="dashboard-overall-rating-value"
           title="Overall Rating"
           value={formatRating(stats.rating)}
           subtitle="Your current academic standing."
@@ -102,8 +108,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ courses, programHours, non
           delay={0.1}
         />
 
-        {/* Max GPA Card */}
         <BentoCard
+          testId="dashboard-max-gpa-card"
+          valueTestId="dashboard-max-gpa-value"
           title="Maximum Possible GPA"
           value={stats.maxGpa.toFixed(2)}
           subtitle={`If you maintain a 4.0 for the remaining ${stats.remainingHours.toFixed(1)} hours.`}
@@ -113,8 +120,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ courses, programHours, non
           delay={0.2}
         />
 
-        {/* Highest Rating Card */}
         <BentoCard
+          testId="dashboard-highest-rating-card"
+          valueTestId="dashboard-highest-rating-value"
           title="Highest Achievable Rating"
           value={formatRating(stats.maxRating)}
           subtitle="The ceiling of your potential."
@@ -125,13 +133,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ courses, programHours, non
         />
         
         {/* Info Card */}
-        <div className="md:col-span-6 glass-card rounded-2xl p-8 flex items-center gap-6">
+        <div id="dashboard-info-card" className="md:col-span-6 glass-card rounded-2xl p-8 flex items-center gap-6">
            <div className="p-4 bg-white/5 rounded-2xl">
              <Info className="w-8 h-8 text-foreground-muted" />
            </div>
            <div>
-             <h3 className="text-xl font-medium text-foreground mb-1">Deep Analysis Active</h3>
-             <p className="text-foreground-muted">
+             <h3 id="dashboard-info-heading" className="text-xl font-medium text-foreground mb-1">Deep Analysis Active</h3>
+             <p id="dashboard-info-body" className="text-foreground-muted">
                Using the Suez Canal University grading schema. All calculations are processed locally on your device for maximum privacy.
              </p>
            </div>

@@ -18,6 +18,13 @@ const QUESTION_CAN_REACH = "Can I still reach a specific rating?";
 const QUESTION_REQUIRED_AVERAGE = "What average GPA do I need for a target rating?";
 const QUESTION_HYPOTHETICAL = "What will my final GPA be if I maintain a specific GPA?";
 
+// Stable test IDs for each question button
+const QUESTION_TEST_IDS: Record<string, string> = {
+  [QUESTION_CAN_REACH]:        "question-btn-can-reach",
+  [QUESTION_REQUIRED_AVERAGE]: "question-btn-required-avg",
+  [QUESTION_HYPOTHETICAL]:     "question-btn-hypothetical",
+};
+
 export const Questions: React.FC<QuestionsProps> = ({ courses, programHours, nonGpaHours }) => {
   const [selectedQuestion, setSelectedQuestion] = useState(QUESTION_CAN_REACH);
   const [targetRating, setTargetRating] = useState<OverallRating>(OverallRating.EXCELLENT);
@@ -47,20 +54,22 @@ export const Questions: React.FC<QuestionsProps> = ({ courses, programHours, non
   }, [selectedQuestion, targetRating, hypotheticalGpa, courses, programHours, nonGpaHours]);
 
   return (
-    <section className="container mx-auto px-6 py-20">
+    <section id="questions-section" className="container mx-auto px-6 py-20">
       <div className="flex items-center gap-3 mb-10">
         <div className="p-2 bg-accent/10 rounded-lg">
           <HelpCircle className="w-5 h-5 text-accent" />
         </div>
-        <h2 className="text-2xl font-semibold text-gradient">Ask a Question</h2>
+        <h2 id="questions-heading" className="text-2xl font-semibold text-gradient">Ask a Question</h2>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sidebar / Question Selection */}
-        <div className="lg:col-span-1 space-y-3">
+        <div id="questions-sidebar" className="lg:col-span-1 space-y-3">
           {[QUESTION_CAN_REACH, QUESTION_REQUIRED_AVERAGE, QUESTION_HYPOTHETICAL].map((q) => (
             <button
               key={q}
+              id={QUESTION_TEST_IDS[q]}
+              data-active={selectedQuestion === q ? "true" : "false"}
               onClick={() => setSelectedQuestion(q)}
               className={`w-full text-left p-4 rounded-xl border transition-all duration-300 flex items-center justify-between group ${
                 selectedQuestion === q 
@@ -75,7 +84,7 @@ export const Questions: React.FC<QuestionsProps> = ({ courses, programHours, non
         </div>
 
         {/* Interaction & Answer Area */}
-        <div className="lg:col-span-2 glass-card rounded-2xl p-8 min-h-[300px] flex flex-col">
+        <div id="questions-panel" className="lg:col-span-2 glass-card rounded-2xl p-8 min-h-[300px] flex flex-col">
           <div className="flex-1">
             <AnimatePresence mode="wait">
               <motion.div
@@ -86,12 +95,14 @@ export const Questions: React.FC<QuestionsProps> = ({ courses, programHours, non
                 className="space-y-8"
               >
                 {selectedQuestion === QUESTION_CAN_REACH || selectedQuestion === QUESTION_REQUIRED_AVERAGE ? (
-                  <div className="space-y-4">
+                  <div id="target-rating-panel" className="space-y-4">
                     <label className="text-xs font-mono uppercase tracking-widest text-foreground-subtle">Target Rating</label>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div id="rating-buttons-group" className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                       {RATING_THRESHOLDS.map(([_, r]) => (
                         <button
                           key={r}
+                          id={`rating-btn-${r.toLowerCase().replace('_', '-')}`}
+                          data-selected={targetRating === r ? "true" : "false"}
                           onClick={() => setTargetRating(r)}
                           className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all ${
                             targetRating === r 
@@ -105,12 +116,13 @@ export const Questions: React.FC<QuestionsProps> = ({ courses, programHours, non
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-4">
+                  <div id="hypothetical-gpa-panel" className="space-y-4">
                     <div className="flex justify-between items-center">
                       <label className="text-xs font-mono uppercase tracking-widest text-foreground-subtle">Hypothetical GPA</label>
-                      <span className="text-accent font-semibold">{hypotheticalGpa.toFixed(2)}</span>
+                      <span id="gpa-slider-display" className="text-accent font-semibold">{hypotheticalGpa.toFixed(2)}</span>
                     </div>
-                    <input 
+                    <input
+                      id="gpa-slider"
                       type="range" 
                       min="0" 
                       max="4" 
@@ -130,14 +142,14 @@ export const Questions: React.FC<QuestionsProps> = ({ courses, programHours, non
             </AnimatePresence>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-white/5">
+          <div id="analysis-result-area" className="mt-8 pt-8 border-t border-white/5">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
                 {selectedQuestion === QUESTION_HYPOTHETICAL ? <TrendingUp className="w-6 h-6" /> : <Target className="w-6 h-6" />}
               </div>
               <div>
-                <h4 className="text-xs font-mono uppercase tracking-widest text-foreground-subtle mb-1">Analysis Result</h4>
-                <p className="text-xl font-medium text-foreground">{answer}</p>
+                <h4 id="analysis-result-label" className="text-xs font-mono uppercase tracking-widest text-foreground-subtle mb-1">Analysis Result</h4>
+                <p id="analysis-result-text" className="text-xl font-medium text-foreground">{answer}</p>
               </div>
             </div>
           </div>
