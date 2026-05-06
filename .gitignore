@@ -3,3 +3,5 @@ __pycache__
 .DS_Store
 .vscode
 sample_transcripts
+e2e/reports
+e2e/test_files/MyU.html

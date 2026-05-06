@@ -19,6 +19,7 @@ def driver_with_input():
     driver = webdriver.Chrome()
     driver.get(BASE_URL)
     file_path = os.path.abspath("test_files/MyU.html")
+    print(f"Uploading file from: {file_path}")
 
     file_input = driver.find_element(By.ID, "file-input")
 
