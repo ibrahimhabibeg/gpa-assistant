@@ -9,7 +9,7 @@ from gpa_assist.algorithms import (
     if_i_continue_with_a_certain_gpa_for_remaining_courses,
     max_achievable_rating,
     what_per_course_average_gpa_is_needed_for_rating,
-    gpa_to_closest_letter_grade
+    gpa_to_closest_letter_grade,
 )
 from gpa_assist.config import OverallRating
 from gpa_assist.parser import parse_html_file
@@ -90,7 +90,7 @@ def render_max_possible_gpa_question(transcript) -> None:
         "This estimates your highest cumulative GPA assuming top performance ahead (4.0 GPA)."
     )
     max_gpa = calculate_max_possible_gpa(transcript)
-    st.metric("Maximum Possible GPA:", f"{max_gpa:.2f}")
+    st.metric("Maximum Possible GPA:", f"{max_gpa:.2f}", key="max_gpa_metric")
     if max_gpa >= 3.5:
         st.success("This ceiling can place you in the Excellent range.")
     elif max_gpa >= 3.0:
@@ -102,20 +102,40 @@ def render_max_possible_gpa_question(transcript) -> None:
 def render_max_achievable_rating_question(transcript) -> None:
     st.write("This identifies the best overall academic rating you can still reach.")
     rating = max_achievable_rating(transcript)
-    st.metric("Highest Achievable Rating:", format_rating(rating))
+    st.metric(
+        "Highest Achievable Rating:",
+        format_rating(rating),
+        key="max_achievable_rating_metric",
+    )
 
     if rating == OverallRating.EXCELLENT:
-        st.success("You can still reach the Excellent range.")
+        st.success(
+            "You can still reach the Excellent range.",
+            key="max_achievable_rating_comment",
+        )
     elif rating == OverallRating.VERY_GOOD:
-        st.info("You can still reach the Very Good range.")
+        st.info(
+            "You can still reach the Very Good range.",
+            key="max_achievable_rating_comment",
+        )
     elif rating == OverallRating.GOOD:
-        st.info("You can still reach the Good range.")
+        st.info(
+            "You can still reach the Good range.", key="max_achievable_rating_comment"
+        )
     elif rating == OverallRating.ACCEPTED:
-        st.warning("Your best reachable result is Accepted.")
+        st.warning(
+            "Your best reachable result is Accepted.",
+            key="max_achievable_rating_comment",
+        )
     elif rating == OverallRating.WEAK:
-        st.warning("Your best reachable result is Weak.")
+        st.warning(
+            "Your best reachable result is Weak.", key="max_achievable_rating_comment"
+        )
     else:
-        st.error("Your best reachable result is Too Weak.")
+        st.error(
+            "Your best reachable result is Too Weak.",
+            key="max_achievable_rating_comment",
+        )
 
 
 def render_can_reach_rating_question(transcript) -> None:
@@ -130,9 +150,14 @@ def render_can_reach_rating_question(transcript) -> None:
     can_reach = can_i_get_a_certain_rating(transcript, target_rating)
 
     if can_reach:
-        st.success(f"Reachable: {format_rating(target_rating)}")
+        st.success(
+            f"Reachable: {format_rating(target_rating)}", key="can_reach_rating_comment"
+        )
     else:
-        st.error(f"Not reachable: {format_rating(target_rating)}")
+        st.error(
+            f"Not reachable: {format_rating(target_rating)}",
+            key="can_reach_rating_comment",
+        )
 
 
 def render_required_average_question(transcript) -> None:
@@ -147,22 +172,42 @@ def render_required_average_question(transcript) -> None:
     required_avg = what_per_course_average_gpa_is_needed_for_rating(
         transcript, target_rating
     )
-    equivalent_letter_grade = gpa_to_closest_letter_grade(required_avg) if required_avg is not None else "N/A"
+    equivalent_letter_grade = (
+        gpa_to_closest_letter_grade(required_avg) if required_avg is not None else "N/A"
+    )
 
     if required_avg is None:
-        st.warning("A required average could not be computed for this target.")
+        st.warning(
+            "A required average could not be computed for this target.",
+            key="required_avg_comment",
+        )
     else:
         cols = st.columns(2)
         with cols[0]:
-            st.metric("Required Average GPA", f"{required_avg:.2f}")
+            st.metric(
+                "Required Average GPA", f"{required_avg:.2f}", key="required_avg_metric"
+            )
         with cols[1]:
-            st.metric("Equivalent Letter Grade", f"≈ {equivalent_letter_grade}")
+            st.metric(
+                "Equivalent Letter Grade",
+                f"≈ {equivalent_letter_grade}",
+                key="equivalent_letter_grade_metric",
+            )
         if required_avg > 4.0:
-            st.error("The required average is above 4.00, so the target is impossible.")
+            st.error(
+                "The required average is above 4.00, so the target is impossible.",
+                key="required_avg_comment",
+            )
         elif required_avg >= 3.5:
-            st.info("This target requires consistently high performance.")
+            st.info(
+                "This target requires consistently high performance.",
+                key="required_avg_comment",
+            )
         else:
-            st.success("This target appears achievable with steady performance.")
+            st.success(
+                "This target appears achievable with steady performance.",
+                key="required_avg_comment",
+            )
 
 
 def render_hypothetical_gpa_question(transcript) -> None:
@@ -176,6 +221,7 @@ def render_hypothetical_gpa_question(transcript) -> None:
         max_value=4.0,
         step=0.05,
         value=3.50,
+        key="hypothetical_gpa_input",
     )
     st.session_state.hypothetical_gpa = float(hypothetical_gpa)
 
@@ -183,16 +229,30 @@ def render_hypothetical_gpa_question(transcript) -> None:
         transcript, st.session_state.hypothetical_gpa
     )
 
-    st.metric("Predicted Final GPA", f"{predicted_final_gpa:.2f}")
+    st.metric(
+        "Predicted Final GPA",
+        f"{predicted_final_gpa:.2f}",
+        key="predicted_final_gpa_metric",
+    )
 
     if predicted_final_gpa >= 3.5:
-        st.success("This keeps you in a strong GPA range.")
+        st.success(
+            "This keeps you in a strong GPA range.", key="predicted_final_gpa_comment"
+        )
     elif predicted_final_gpa >= 3.0:
-        st.info("This keeps you in a solid GPA range.")
+        st.info(
+            "This keeps you in a solid GPA range.", key="predicted_final_gpa_comment"
+        )
     elif predicted_final_gpa >= 2.0:
-        st.warning("This GPA would be acceptable but still leaves room to improve.")
+        st.warning(
+            "This GPA would be acceptable but still leaves room to improve.",
+            key="predicted_final_gpa_comment",
+        )
     else:
-        st.error("This GPA would be low and may limit your overall outcome.")
+        st.error(
+            "This GPA would be low and may limit your overall outcome.",
+            key="predicted_final_gpa_comment",
+        )
 
 
 def render_upload_section() -> None:
@@ -205,7 +265,10 @@ def render_upload_section() -> None:
 
     with upload_col:
         uploaded_file = st.file_uploader(
-            "Ibn Al-Haitham HTML file", type=["html"], accept_multiple_files=False
+            "Ibn Al-Haitham HTML file",
+            type=["html"],
+            accept_multiple_files=False,
+            key="file_uploader",
         )
 
     with settings_col:
@@ -214,12 +277,14 @@ def render_upload_section() -> None:
             min_value=1.0,
             step=1.0,
             value=float(st.session_state.program_hours),
+            key="program_hours_input",
         )
         non_gpa_hours = st.number_input(
             "Non GPA hours",
             min_value=0.0,
             step=1.0,
             value=float(st.session_state.non_gpa_hours),
+            key="non_gpa_hours_input",
         )
 
     st.session_state.program_hours = float(program_hours)
@@ -228,7 +293,13 @@ def render_upload_section() -> None:
         st.session_state.transcript.program_total_hours = float(program_hours)
         st.session_state.transcript.non_gpa_hours = float(non_gpa_hours)
 
-    parse_clicked = st.button("Parse transcript", disabled=uploaded_file is None, width="stretch", type="primary")
+    parse_clicked = st.button(
+        "Parse transcript",
+        disabled=uploaded_file is None,
+        width="stretch",
+        type="primary",
+        key="parse_transcript_button",
+    )
     if parse_clicked and uploaded_file is not None:
         with st.spinner("Parsing transcript"):
             try:
@@ -251,11 +322,11 @@ def render_question_section() -> None:
 
     metric_col1, metric_col2, metric_col3 = st.columns(3)
     with metric_col1:
-        st.metric("Semesters", semesters_count)
+        st.metric("Semesters", semesters_count, key="overview_semesters")
     with metric_col2:
-        st.metric("Courses", courses_count)
+        st.metric("Courses", courses_count, key="overview_courses")
     with metric_col3:
-        st.metric("Current GPA", f"{current_gpa:.2f}")
+        st.metric("Current GPA", f"{current_gpa:.2f}", key="overview_current_gpa")
 
     st.selectbox(
         "Choose a predefined question",
@@ -326,7 +397,7 @@ def render_project_info_section():
         - **Semester**: Spring 2026
         """)
 
-    expander = st.expander("Project Motivation and Overview")
+    expander = st.expander("Project Motivation and Overview", key="motivation_expander")
 
     with expander:
         st.subheader("Motivation and Project Overview")
@@ -349,6 +420,7 @@ def render_project_info_section():
         university rules.
         """)
 
+
 def render_getting_started_section():
     st.subheader("Step 1: Getting the HTML File")
     st.write("""
@@ -359,6 +431,7 @@ def render_getting_started_section():
     4. In the save dialog, choose "Web Page, Complete" as the format. A folder called 'MyU_files' will be created alongside the 'MyU.html' file.
     5. Upload the 'MyU.html' file to this app using the upload section below.
     """)
+
 
 def main() -> None:
     init_session_state()
