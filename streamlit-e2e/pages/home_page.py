@@ -1,36 +1,34 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
-from tests.e2e.pages.base_page import BasePage
+from pages.base_page import BasePage
 
 
 class HomePage(BasePage):
-
     HERO_HEADING = (By.CSS_SELECTOR, "h1#ibn-al-haitham-gpa-assistant")
-    GITHUB_LINK  = (By.LINK_TEXT, "ibrahimhabibeg/gpa-assistant")
-    TRELLO_LINK  = (By.CSS_SELECTOR, "a[href*='trello.com']")
-    JIRA_LINK    = (By.CSS_SELECTOR, "a[href*='atlassian.net']")
-
+    GITHUB_LINK = (By.LINK_TEXT, "ibrahimhabibeg/gpa-assistant")
+    TRELLO_LINK = (By.CSS_SELECTOR, "a[href*='trello.com']")
+    JIRA_LINK = (By.CSS_SELECTOR, "a[href*='atlassian.net']")
 
     PROGRAM_HOURS_INPUT = (By.CSS_SELECTOR, "input[aria-label='Program hours']")
     NON_GPA_HOURS_INPUT = (By.CSS_SELECTOR, "input[aria-label='Non GPA hours']")
-    FILE_INPUT          = (By.CSS_SELECTOR, "input[data-testid='stFileUploaderDropzoneInput']")
-    PARSE_BUTTON        = (By.CSS_SELECTOR, "button[data-testid='stBaseButton-primary']")
+    FILE_INPUT = (By.CSS_SELECTOR, "input[data-testid='stFileUploaderDropzoneInput']")
+    PARSE_BUTTON = (By.CSS_SELECTOR, "button[data-testid='stBaseButton-primary']")
+
+    DROPDOWN_LIST = (By.CSS_SELECTOR, 'div[data-baseweb="select"] input')
 
     # HELP !
-    SEMESTERS_METRIC    = ""
-    COURSES_METRIC      = ""
-    CURRENT_GPA_METRIC  = ""
-
+    SEMESTERS_METRIC = ""
+    COURSES_METRIC = ""
+    CURRENT_GPA_METRIC = ""
 
     def get_heading_text(self):
         return self.get_text(*self.HERO_HEADING)
 
-
     def _set_number_input(self, locator, value):
         el = self.find(*locator)
         el.click()
-        el.send_keys(Keys.CONTROL + "a") # it works so dont ask :)
+        el.send_keys(Keys.CONTROL + "a")  # it works so dont ask :)
         el.send_keys(str(value))
 
     def set_program_hours(self, value):

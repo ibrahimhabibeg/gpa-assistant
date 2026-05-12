@@ -1,4 +1,4 @@
-from tests.e2e.pages.analysis_page import AnalysisPage
+from pages.analysis_page import AnalysisPage
 import constants
 
 

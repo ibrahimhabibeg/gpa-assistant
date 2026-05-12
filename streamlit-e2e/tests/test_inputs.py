@@ -1,4 +1,4 @@
-from tests.e2e.pages.home_page import HomePage
+from pages.home_page import HomePage
 import constants
 
 
