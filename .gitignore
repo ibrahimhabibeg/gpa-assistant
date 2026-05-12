@@ -3,7 +3,5 @@ __pycache__
 .DS_Store
 .vscode
 sample_transcripts
-react-e2e/reports
-react-e2e/test_files/MyU.html
-streamlit-e2e/reports
-streamlit-e2e/test_files/MyU.html
+e2e/reports
+e2e/test_files/MyU.html
