@@ -9,13 +9,13 @@ from gpa_assist.algorithms import (
     if_i_continue_with_a_certain_gpa_for_remaining_courses,
     max_achievable_rating,
     what_per_course_average_gpa_is_needed_for_rating,
-    gpa_to_closest_letter_grade
+    gpa_to_closest_letter_grade,
 )
 from gpa_assist.config import OverallRating
 from gpa_assist.parser import parse_html_file
 
 
-st.set_page_config(page_title="GPA Assistant", layout="wide")
+st.set_page_config(page_title="GPA Assistant")
 
 
 QUESTION_MAX_GPA = "What is my maximum possible GPA?"
@@ -147,7 +147,9 @@ def render_required_average_question(transcript) -> None:
     required_avg = what_per_course_average_gpa_is_needed_for_rating(
         transcript, target_rating
     )
-    equivalent_letter_grade = gpa_to_closest_letter_grade(required_avg) if required_avg is not None else "N/A"
+    equivalent_letter_grade = (
+        gpa_to_closest_letter_grade(required_avg) if required_avg is not None else "N/A"
+    )
 
     if required_avg is None:
         st.warning("A required average could not be computed for this target.")
@@ -228,7 +230,12 @@ def render_upload_section() -> None:
         st.session_state.transcript.program_total_hours = float(program_hours)
         st.session_state.transcript.non_gpa_hours = float(non_gpa_hours)
 
-    parse_clicked = st.button("Parse transcript", disabled=uploaded_file is None, width="stretch", type="primary")
+    parse_clicked = st.button(
+        "Parse transcript",
+        disabled=uploaded_file is None,
+        width="stretch",
+        type="primary",
+    )
     if parse_clicked and uploaded_file is not None:
         with st.spinner("Parsing transcript"):
             try:
@@ -296,18 +303,20 @@ def render_answer_section() -> None:
 def render_project_info_section():
     st.title("Ibn Al-Haitham GPA Assistant")
     st.write("""
-    This app is our submission for the course project for the course Software Requirements Engineering (SEN 302) at the Suez Canal University in the spring semester of 2026.    
+    This app is our submission for the course project for both the Software Requirements Engineering course (SEN 302) and the Software Verification and Validation course (SEN 304) at the Suez Canal University in the spring semester of 2026.    
     
     The code can be found on GitHub at [ibrahimhabibeg/gpa-assistant](https://github.com/ibrahimhabibeg/gpa-assistant).
     
-    As a part of our submission, 
+    As a part of our submission for the Software Requirements Engineering course,
     [this](https://trello.com/b/THUbWFxZ/gpa-assistant) is the link to our Trello board and
     [this](https://gpaassistant.atlassian.net/jira/software/projects/KAN/boards/2?cloudId=c97a5841-2645-426a-819e-0bce433584d6&atlOrigin=eyJpIjoiZWQyMDkwMGM4OTBhNDFmMWEzYzIwNmUwZjBiZjZlMmUiLCJwIjoiaiJ9)
     is the link to our Jira board (Accessible only to project members and instructors).
+    
+    As a part of our submission for the Software Verification and Validation course, we have created both unit and e2e tests for our project using PyTest and Selenium. The test code can be found in the repository.
     """)
 
-    cols = st.columns(2)
-    with cols[0]:
+    cols_1 = st.columns(2)
+    with cols_1[0]:
         st.subheader("Project Team")
         st.write("""
         - Ibrahim Habib
@@ -316,15 +325,40 @@ def render_project_info_section():
         - Youssef Mahmoud
         - Mohamed Essam
         """)
-    with cols[1]:
-        st.subheader("Course Information")
-        st.write("""
-        - **Instructor**: Dr. Mohamed Mead
-        - **Teaching Assistant**: Eng. Merhan Hisham
-        - **Course**: Software Requirements Engineering (SEN 302)
-        - **Program**: Software Engineering, Suez Canal University
-        - **Semester**: Spring 2026
-        """)
+    with cols_1[1]:
+        st.metric(
+            "GitHub Repo",
+            "[gpa-assistant](https://github.com/ibrahimhabibeg/gpa-assistant)",
+        )
+        st.metric(
+            "Trello Board",
+            "[GPA Assistant Trello](https://trello.com/b/THUbWFxZ/gpa-assistant)",
+        )
+        st.metric(
+            "Jira Board",
+            "[GPA Assistant Jira](https://gpaassistant.atlassian.net/jira/software/projects/KAN/boards/2?cloudId=c97a5841-2645-426a-819e-0bce433584d6&atlOrigin=eyJpIjoiZWQyMDkwMGM4OTBhNDFmMWEzYzIwNmUwZjBiZjZlMmUiLCJwIjoiaiJ9)",
+        )
+
+    st.subheader("Acknowledgments")
+    cols_2 = st.columns(2)
+    with cols_2[0]:
+        st.metric(
+            "SRE Course Instructor",
+            "Dr. Mohamed Mead",
+        )
+        st.metric(
+            "SRE Teaching Assistant",
+            "Eng. Merhan Hisham",
+        )
+    with cols_2[1]:
+        st.metric(
+            "V&V Course Instructor",
+            "Dr. Marwa Fekry",
+        )
+        st.metric(
+            "V&V Teaching Assistant",
+            "Eng. Fatma El-Sayed",
+        )
 
     expander = st.expander("Project Motivation and Overview")
 
@@ -349,6 +383,7 @@ def render_project_info_section():
         university rules.
         """)
 
+
 def render_getting_started_section():
     st.subheader("Step 1: Getting the HTML File")
     st.write("""
@@ -359,6 +394,7 @@ def render_getting_started_section():
     4. In the save dialog, choose "Web Page, Complete" as the format. A folder called 'MyU_files' will be created alongside the 'MyU.html' file.
     5. Upload the 'MyU.html' file to this app using the upload section below.
     """)
+
 
 def main() -> None:
     init_session_state()
